@@ -25,9 +25,9 @@
       "index.html",
       "manifest.webmanifest",
       "sw.js",
-      "icons/**/*",
       "electron/**/*",
-      "package.json"
+      "package.json",
+      "pwa-assets/**/*"
     ],
     "win": {
       "target": [
