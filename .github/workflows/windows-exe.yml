@@ -11,20 +11,35 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: read
     steps:
       - name: Baixar projeto
         uses: actions/checkout@v4
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+      - name: Verificar ambiente
+        run: |
+          node --version
+          npm --version
       - name: Instalar dependências
         run: npm install
-      - name: Gerar instalador
+      - name: Gerar instalador Windows
         run: npm run dist:win
-      - name: Publicar instalador
+      - name: Confirmar instalador
+        shell: pwsh
+        run: |
+          $installer = Get-ChildItem -Path dist -Filter "*.exe" -File
+          if (-not $installer) {
+            throw "O instalador EXE não foi encontrado na pasta dist."
+          }
+          $installer | ForEach-Object { Write-Host "Instalador criado: $($_.FullName) - $($_.Length) bytes" }
+      - name: Publicar instalador para download
         uses: actions/upload-artifact@v4
         with:
           name: Cooee-Tools-3D-Windows
           path: dist/*.exe
           if-no-files-found: error
+          retention-days: 14
