@@ -1,0 +1,30 @@
+{
+  "name": "cooee-tools-3d",
+  "version": "1.0.0",
+  "description": "Ferramentas seguras para jogar Club Cooee no Windows",
+  "main": "electron/main.cjs",
+  "author": "Cooee Tools 3D",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist:win": "electron-builder --win nsis --x64"
+  },
+  "devDependencies": {
+    "electron": "^35.7.5",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "br.cooeetools3d.desktop",
+    "productName": "Cooee Tools 3D",
+    "directories": { "output": "dist" },
+    "files": ["index.html", "electron/**/*", "package.json"],
+    "win": { "target": ["nsis"], "artifactName": "Cooee-Tools-3D-Setup-${version}.${ext}" },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Cooee Tools 3D"
+    }
+  }
+}
