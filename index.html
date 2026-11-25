@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b1220"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icons/cley.svg" type="image/svg+xml">
 <title>CLEY COOE Studio</title>
 <style>
 :root{color-scheme:dark;--bg:#0b1220;--panel:#172238;--line:#30415e;--mint:#72e3c1;--muted:#aab9d0}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:#eef4ff;font:15px system-ui,sans-serif}
-header{text-align:center;padding:28px 16px 12px}h1{color:var(--mint);margin:0;font-size:clamp(25px,5vw,36px)}header p,.muted{color:var(--muted);font-size:13px}
-main{max-width:1150px;margin:auto;padding:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+header{text-align:center;padding:calc(20px + env(safe-area-inset-top)) 16px 12px;position:sticky;top:0;z-index:5;background:#0b1220ee;backdrop-filter:blur(12px)}h1{color:var(--mint);margin:0;font-size:clamp(25px,5vw,36px)}header p,.muted{color:var(--muted);font-size:13px}
+main{max-width:1150px;margin:auto;padding:16px 16px calc(28px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}
 h2{font-size:18px;margin:0 0 12px}textarea,input,select{width:100%;padding:12px;margin:6px 0;border-radius:9px;border:1px solid #405371;background:#0c172b;color:white;font:inherit}
 textarea{min-height:84px;resize:vertical}button{padding:11px 13px;margin:5px 4px 5px 0;border:1px solid transparent;border-radius:9px;background:var(--mint);color:#07151a;font-weight:700;cursor:pointer}button.alt{background:#30415e;color:white;border-color:#50627d}button:hover{filter:brightness(1.08)}
@@ -16,7 +16,7 @@ textarea{min-height:84px;resize:vertical}button{padding:11px 13px;margin:5px 4px
 </style>
 </head>
 <body>
-<header><h1>CLEY COOE STUDIO</h1><p>Painel auxiliar para criar salas, organizar eventos e mensagens no Club Cooee</p></header>
+<header><h1>CLEY COOE</h1><p>Seu aplicativo auxiliar para o Club Cooee</p><button id="installApp" hidden>＋ Instalar aplicativo</button><p class="muted">Painel auxiliar para criar salas, organizar eventos e mensagens no Club Cooee</p></header>
 <main>
 <section class="card" id="cmd-card"><h2>⌨️ CMD — Central de Comandos</h2><p class="muted">Digite <b>ajuda</b> para ver os comandos disponíveis.</p>
 <div class="terminal" id="terminal" role="log" aria-live="polite">CLEY COOE CMD v1.0
@@ -41,7 +41,7 @@ Digite ajuda para listar os comandos.</div>
 <section class="card" id="backup-card"><h2>📦 Backup</h2><button id="backup">Baixar backup JSON</button><p class="muted">Os dados ficam guardados neste navegador. Faça backup para levar suas anotações a outro aparelho.</p></section>
 </main>
 <script>
-const $=id=>document.getElementById(id);
+let installPrompt=null;const installButton=document.getElementById('installApp');window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;installButton.hidden=false});installButton.addEventListener('click',async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;installButton.hidden=true});window.addEventListener('appinstalled',()=>{installButton.hidden=true});if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}const $=id=>document.getElementById(id);
 const terminal=$('terminal');
 function log(text){terminal.textContent+='\n> '+text;terminal.scrollTop=terminal.scrollHeight}
 function save(key,value){localStorage.setItem('cley_'+key,value);return 'Salvo neste navegador: '+key}
