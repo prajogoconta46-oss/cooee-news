@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<title>Cooee Tools 3D</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#141d32;--panel2:#1b2943;--line:#293956;--text:#eef4ff;--muted:#9aacc8;--accent:#67e2c1;--blue:#7ba7ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#1b3152 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.5 "Segoe UI",Arial,sans-serif}
+header{padding:26px clamp(18px,4vw,54px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:#0b1020cc;position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}
+.brand{display:flex;gap:13px;align-items:center}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--blue));display:grid;place-items:center;color:#081323;font-weight:900;font-size:21px}.brand h1{font-size:20px;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.clock{font-variant-numeric:tabular-nums;text-align:right}.clock strong{font-size:24px;display:block}.clock span{color:var(--muted);font-size:12px}
+main{max-width:1420px;margin:auto;padding:30px clamp(16px,4vw,54px) 60px}.hero{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:25px 28px;background:linear-gradient(115deg,#1b3553,#17243a);border:1px solid #355071;border-radius:22px;margin-bottom:24px}.hero h2{margin:0 0 7px;font-size:clamp(22px,3vw,32px)}.hero p{margin:0;color:#b8c8df}.hero .primary{white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{background:linear-gradient(160deg,var(--panel),#10192b);border:1px solid var(--line);border-radius:18px;padding:21px;min-width:0}.card h3{margin:0 0 6px;font-size:18px}.desc{color:var(--muted);margin:0 0 17px;font-size:13px}.actions{display:flex;flex-wrap:wrap;gap:9px}
+button,.linkbtn{border:1px solid #405577;background:var(--panel2);color:var(--text);padding:10px 13px;border-radius:11px;font-weight:600;cursor:pointer;text-decoration:none;font-size:13px;display:inline-flex;align-items:center;gap:7px}button:hover,.linkbtn:hover{border-color:var(--accent);transform:translateY(-1px)}.primary{background:var(--accent);color:#081923;border-color:var(--accent)}.subtle{background:#111b2d}
+.status{margin-top:16px;color:var(--muted);font-size:12px;min-height:18px}.event{padding:11px 13px;border-radius:12px;background:#101a2d;border:1px solid var(--line);margin:8px 0}.event strong{display:block}.event span{color:var(--muted);font-size:12px}
+input,textarea{background:#0b1425;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;width:100%;margin:6px 0 10px}label{font-size:12px;color:var(--muted)}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:10px;margin-top:14px}.thumb{position:relative;aspect-ratio:1;background:#0a1220;border:1px solid var(--line);border-radius:10px;overflow:hidden}.thumb img{width:100%;height:100%;object-fit:cover}.thumb a{position:absolute;bottom:5px;left:5px;right:5px;text-align:center;background:#07101ddd;border-radius:6px;color:white;font-size:11px;text-decoration:none;padding:4px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:25px;border-top:1px solid var(--line)}
+@media(max-width:760px){header{position:static}.grid{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.clock strong{font-size:20px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">C3</div><div><h1>Cooee Tools 3D</h1><p>Central de ferramentas para Club Cooee</p></div></div><div class="clock"><strong id="clock">--:--:--</strong><span id="date"></span></div></header>
+<main>
+<section class="hero"><div><h2>Seu espaço de jogo, organizado.</h2><p>Atalhos, eventos, capturas e ajustes seguros do Windows em um só lugar.</p></div><button class="primary" id="launch">▶ Abrir Club Cooee</button></section>
+<div class="grid">
+<section class="card"><h3>🎮 Club Cooee</h3><p class="desc">Abra o jogo e encontre páginas de perfil e personalização.</p><div class="actions"><button class="primary" id="openGame">Abrir Club Cooee</button><button data-search="perfil Club Cooee">Perfil</button><button data-search="personalização avatar itens">Personalização</button></div><div class="status" id="gameStatus"></div></section>
+<section class="card"><h3>📰 Notícias e novidades</h3><p class="desc">Pesquise publicações do domínio oficial do jogo.</p><div class="actions"><button data-search="notícias novidades">Pesquisar novidades oficiais</button><button data-search="eventos">Pesquisar eventos oficiais</button></div><div class="status">A pesquisa abre no navegador e prioriza páginas de clubcooee.com.</div></section>
+<section class="card"><h3>📅 Relógio e eventos</h3><p class="desc">Relógio local e lembretes de eventos que você adicionar.</p><label for="eventName">Nome do evento</label><input id="eventName" maxlength="70" placeholder="Ex.: Festa no Club Cooee"><label for="eventDate">Data e hora</label><input id="eventDate" type="datetime-local"><div class="actions"><button class="primary" id="addEvent">Adicionar evento</button></div><div id="events"></div></section>
+<section class="card"><h3>🖼️ Galeria e capturas</h3><p class="desc">Importe imagens do PC ou capture uma janela/tela com sua autorização.</p><div class="actions"><button class="primary" id="capture">Capturar tela</button><button id="chooseImages">Adicionar imagens</button><button id="openPictures">Abrir pasta Imagens</button></div><input id="imageFiles" type="file" accept="image/*" multiple hidden><div class="gallery" id="gallery"></div><div class="status" id="galleryStatus">As imagens selecionadas ficam nesta sessão; salve as capturas no computador.</div></section>
+<section class="card"><h3>⚙️ Otimização básica do Windows</h3><p class="desc">Atalhos para configurações legítimas. Nenhum serviço é desativado e nenhuma configuração é alterada automaticamente.</p><div class="actions"><button data-setting="ms-settings:gaming-gamemode">Modo de Jogo</button><button data-setting="ms-settings:display">Tela e gráficos</button><button id="taskManager">Gerenciador de Tarefas</button><button id="power">Opções de energia</button></div><div class="status">Dica: feche manualmente programas que não estiver usando e mantenha o Windows e os drivers atualizados.</div></section>
+<section class="card"><h3>🔗 Páginas oficiais</h3><p class="desc">Links e pesquisas direcionadas ao domínio oficial.</p><div class="actions"><button class="primary" id="officialHome">Site oficial Club Cooee</button><button data-search="suporte">Buscar suporte oficial</button><button data-search="conta login">Ajuda com conta</button></div><div class="status">Confira se o endereço aberto pertence ao domínio oficial antes de informar seus dados.</div></section>
+</div>
+</main>
+<footer>Cooee Tools 3D · Ferramenta independente e não oficial. Não modifica arquivos, memória ou funcionamento do jogo. Sem cheats.</footer>
+<script>
+const $=id=>document.getElementById(id);
+const api=window.cooeeTools;
+async function act(promise,statusId){try{await promise;if(statusId)$(statusId).textContent="Comando enviado com sucesso."}catch(e){if(statusId)$(statusId).textContent="Não foi possível abrir. Verifique se está no Windows."}}
+function openGame(){if(api)act(api.openClubCooee(),"gameStatus");else window.open("https://www.clubcooee.com/","_blank","noopener")}
+$("launch").onclick=openGame;$("openGame").onclick=openGame;$("officialHome").onclick=openGame;
+document.querySelectorAll("[data-search]").forEach(b=>b.onclick=()=>api?act(api.searchOfficial(b.dataset.search)):window.open("https://www.google.com/search?q="+encodeURIComponent("site:clubcooee.com "+b.dataset.search),"_blank","noopener"));
+document.querySelectorAll("[data-setting]").forEach(b=>b.onclick=()=>api?act(api.openSetting(b.dataset.setting)):alert("Este atalho funciona no aplicativo para Windows."));
+$("taskManager").onclick=()=>{if(api)act(api.openSetting("ms-settings:gaming-gamemode"));else alert("Pressione Ctrl + Shift + Esc para abrir o Gerenciador de Tarefas.")};
+$("power").onclick=()=>{if(api)act(api.openSetting("ms-settings:display"));else alert("Pesquise por Opções de Energia no menu Iniciar.")};
+function tick(){const d=new Date();$("clock").textContent=d.toLocaleTimeString("pt-BR");$("date").textContent=d.toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"long",year:"numeric"})}tick();setInterval(tick,1000);
+const eventKey="cooee-tools-events-v1";
+function renderEvents(){const arr=JSON.parse(localStorage.getItem(eventKey)||"[]");$("events").innerHTML=arr.length?arr.map((e,i)=>'<div class="event"><strong>'+escapeHtml(e.name)+'</strong><span>'+new Date(e.when).toLocaleString("pt-BR")+'</span> <button data-remove="'+i+'">Remover</button></div>').join(""):'<div class="status">Nenhum evento cadastrado.</div>';document.querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>{const a=JSON.parse(localStorage.getItem(eventKey)||"[]");a.splice(+b.dataset.remove,1);localStorage.setItem(eventKey,JSON.stringify(a));renderEvents()})}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+$("addEvent").onclick=()=>{const name=$("eventName").value.trim(),when=$("eventDate").value;if(!name||!when){alert("Informe o nome e a data do evento.");return}const a=JSON.parse(localStorage.getItem(eventKey)||"[]");a.push({name,when});localStorage.setItem(eventKey,JSON.stringify(a));$("eventName").value="";$("eventDate").value="";renderEvents()};renderEvents();
+const gallery=$("gallery");
+function addImage(file){if(!file.type.startsWith("image/"))return;const url=URL.createObjectURL(file),item=document.createElement("div");item.className="thumb";const img=document.createElement("img");img.src=url;img.alt=file.name;const a=document.createElement("a");a.href=url;a.download=file.name||"captura.png";a.textContent="Salvar imagem";item.append(img,a);gallery.prepend(item)}
+$("chooseImages").onclick=()=>$("imageFiles").click();$("imageFiles").onchange=e=>[...e.target.files].forEach(addImage);
+$("openPictures").onclick=()=>api?act(api.openFolder("pictures")):alert("Abra a pasta Imagens pelo Explorador de Arquivos.");
+$("capture").onclick=async()=>{try{if(!navigator.mediaDevices?.getDisplayMedia)throw new Error("Captura indisponível");const stream=await navigator.mediaDevices.getDisplayMedia({video:true,audio:false});const video=document.createElement("video");video.srcObject=stream;await video.play();await new Promise(r=>video.onloadedmetadata=r);const canvas=document.createElement("canvas");canvas.width=video.videoWidth;canvas.height=video.videoHeight;canvas.getContext("2d").drawImage(video,0,0);stream.getTracks().forEach(t=>t.stop());canvas.toBlob(blob=>{const f=new File([blob],"captura-"+Date.now()+".png",{type:"image/png"});addImage(f);$("galleryStatus").textContent="Captura adicionada. Clique em Salvar imagem para guardar no PC."},"image/png")}catch(e){$("galleryStatus").textContent="Captura cancelada ou não permitida pelo Windows."}};
+</script>
+</body></html>
