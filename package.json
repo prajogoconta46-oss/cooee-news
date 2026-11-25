@@ -1,6 +1,6 @@
 {
   "name": "cley-cooe-studio",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLEY COOE Studio - aplicativo auxiliar para organizar salas e eventos do Club Cooee",
   "main": "electron/main.cjs",
   "author": "CLEY COOE",
