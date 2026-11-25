@@ -46,6 +46,8 @@ const api=window.cooeeTools;
 async function act(promise,statusId){try{await promise;if(statusId)$(statusId).textContent="Comando enviado com sucesso."}catch(e){if(statusId)$(statusId).textContent="Não foi possível abrir. Verifique se está no Windows."}}
 function openGame(){if(api)act(api.openClubCooee(),"gameStatus");else window.open("https://www.clubcooee.com/","_blank","noopener")}
 $("launch").onclick=openGame;$("openGame").onclick=openGame;$("officialHome").onclick=openGame;
+$("requestIntegration").onclick=async()=>{try{await api.requestOfficialIntegration();$("integrationStatus").textContent="Seu programa de e-mail foi aberto com uma solicitação de autorização pronta para enviar. A integração por API depende da resposta oficial.";addLog("Solicitação de API oficial","Pedido de documentação e autorização preparado");}catch(e){$("integrationStatus").textContent="Não foi possível abrir o programa de e-mail. Você pode contatar info@clubcooee.com manualmente.";}};
+$("openClubRules").onclick=openGame;
 document.querySelectorAll("[data-search]").forEach(b=>b.onclick=()=>api?act(api.searchOfficial(b.dataset.search)):window.open("https://www.google.com/search?q="+encodeURIComponent("site:clubcooee.com "+b.dataset.search),"_blank","noopener"));
 document.querySelectorAll("[data-setting]").forEach(b=>b.onclick=()=>api?act(api.openSetting(b.dataset.setting)):alert("Este atalho funciona no aplicativo para Windows."));
 $("taskManager").onclick=()=>{if(api)act(api.openSystemTool("taskManager"));else alert("Pressione Ctrl + Shift + Esc para abrir o Gerenciador de Tarefas.")};
