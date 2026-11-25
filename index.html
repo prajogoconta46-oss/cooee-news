@@ -1,18 +1,80 @@
-<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CLEY COOE Studio</title><style>
-:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#eef4ff;font:16px system-ui}header{text-align:center;padding:28px}h1{color:#72e3c1;margin:0}main{max-width:1100px;margin:auto;padding:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}.card{background:#172238;border:1px solid #30415e;border-radius:16px;padding:18px}textarea,input,select,button{width:100%;padding:12px;margin:6px 0;border-radius:9px;border:1px solid #405371;background:#0c172b;color:white}button{background:#72e3c1;color:#07151a;font-weight:bold;cursor:pointer}button.alt{background:#30415e;color:white}.out{white-space:pre-wrap;line-height:1.5}.muted{color:#aab9d0;font-size:13px}</style>
-<header><h1>CLEY COOE STUDIO</h1><p class="muted">Painel auxiliar para criar salas, organizar eventos e mensagens no Club Cooee</p></header>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CLEY COOE Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#172238;--line:#30415e;--mint:#72e3c1;--muted:#aab9d0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#eef4ff;font:15px system-ui,sans-serif}
+header{text-align:center;padding:28px 16px 12px}h1{color:var(--mint);margin:0;font-size:clamp(25px,5vw,36px)}header p,.muted{color:var(--muted);font-size:13px}
+main{max-width:1150px;margin:auto;padding:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}
+h2{font-size:18px;margin:0 0 12px}textarea,input,select{width:100%;padding:12px;margin:6px 0;border-radius:9px;border:1px solid #405371;background:#0c172b;color:white;font:inherit}
+textarea{min-height:84px;resize:vertical}button{padding:11px 13px;margin:5px 4px 5px 0;border:1px solid transparent;border-radius:9px;background:var(--mint);color:#07151a;font-weight:700;cursor:pointer}button.alt{background:#30415e;color:white;border-color:#50627d}button:hover{filter:brightness(1.08)}
+.out{white-space:pre-wrap;line-height:1.5;overflow-wrap:anywhere;margin-top:10px}.terminal{background:#050b14;border:1px solid #33445f;border-radius:12px;padding:12px;font:13px/1.55 ui-monospace,monospace;min-height:190px;max-height:320px;overflow:auto;white-space:pre-wrap;color:#c9f8e9}.cmdrow{display:flex;gap:6px;align-items:center}.cmdrow input{flex:1;min-width:0}.cmdrow button{margin:6px 0}.on{background:var(--mint)!important;color:#07151a!important}
+#grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}#grid button{margin:0;padding:9px 2px}
+</style>
+</head>
+<body>
+<header><h1>CLEY COOE STUDIO</h1><p>Painel auxiliar para criar salas, organizar eventos e mensagens no Club Cooee</p></header>
 <main>
-<section class="card"><h2>🏠 Planejar decoração</h2><input id="room" placeholder="Nome da sala"><select id="style"><option>Minimalista</option><option>Moderna</option><option>Luxuosa</option><option>Neon futurista</option><option>Romântica</option><option>Praia</option><option>Boho</option></select><textarea id="desc" placeholder="Descreva tema, cores e ambiente"></textarea><textarea id="items" placeholder="Móveis e itens que deseja incluir"></textarea><button onclick="makePlan()">Gerar projeto</button><div id="plan" class="out"></div><button class="alt" onclick="save('projeto',plan.textContent)">Salvar projeto</button></section>
-<section class="card"><h2>📐 Planta da sala</h2><p class="muted">Clique nos quadrados para marcar posições.</p><div id="grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px"></div><button class="alt" onclick="document.querySelectorAll('#grid button').forEach(b=>b.classList.remove('on'))">Limpar planta</button></section>
-<section class="card"><h2>💬 Mensagens rápidas</h2><textarea id="msg" placeholder="Escreva convite ou mensagem"></textarea><button onclick="copyMsg()">Copiar mensagem</button><button class="alt" onclick="msg.value='🎉 Você está convidado! Vamos nos encontrar no Club Cooee!'">Criar convite</button><button class="alt" onclick="msg.value='✨ Obrigado por participar! Até a próxima!'">Agradecimento</button></section>
-<section class="card"><h2>🎈 Organizar evento</h2><input id="ev" placeholder="Nome do evento"><input id="date" placeholder="Data e horário"><textarea id="details" placeholder="Tema, regras e detalhes"></textarea><button onclick="eventOut.textContent='Evento: '+ev.value+'\nQuando: '+date.value+'\nDetalhes: '+details.value+'\n\nRoteiro: receber convidados; explicar regras; iniciar atividade; registrar foto; agradecer e encerrar.'">Montar roteiro</button><div id="eventOut" class="out"></div></section>
-<section class="card"><h2>📝 Minhas notas</h2><textarea id="notes" placeholder="Guarde suas ideias"></textarea><button onclick="save('notas',notes.value)">Salvar notas</button><button class="alt" onclick="notes.value=localStorage.getItem('notas')||''">Carregar notas</button></section>
-<section class="card"><h2>⏱️ Temporizador</h2><input id="mins" type="number" min="1" value="5"><button onclick="timerStart()">Iniciar</button><div id="clock" class="out">Pronto</div></section>
-<section class="card"><h2>📦 Backup</h2><button onclick="backup()">Baixar backup JSON</button><p class="muted">Os dados ficam guardados neste navegador. O painel não acessa nem modifica o jogo.</p></section>
-</main><script>
-const grid=document.getElementById('grid');for(let i=0;i<24;i++){let b=document.createElement('button');b.textContent='·';b.style.margin=0;b.onclick=()=>{b.classList.toggle('on');b.textContent=b.classList.contains('on')?'●':'·';b.style.background=b.classList.contains('on')?'#72e3c1':'#0c172b';b.style.color=b.classList.contains('on')?'#07151a':'white'};grid.append(b)}
-function makePlan(){plan.textContent='Projeto: '+(room.value||'Minha sala')+'\nEstilo: '+style.value+'\n\nConceito: '+(desc.value||'Defina um tema central e use uma paleta de 2 a 3 cores.')+'\n\nDistribuição: coloque o móvel principal em destaque; deixe corredores livres; agrupe itens por tema; use iluminação e objetos pequenos para dar acabamento.\n\nItens desejados: '+(items.value||'Definir lista de móveis')+'\n\nEtapas: 1. Definir tema e cores. 2. Posicionar móveis grandes. 3. Organizar circulação. 4. Adicionar iluminação. 5. Finalizar detalhes.'}
-function save(k,v){localStorage.setItem('cley_'+k,v);alert('Salvo neste navegador!')}function copyMsg(){navigator.clipboard.writeText(msg.value).then(()=>alert('Copiado!')).catch(()=>alert('Selecione e copie a mensagem manualmente.'))}
-let tick;function timerStart(){clearInterval(tick);let s=Math.max(1,+mins.value)*60;clock.textContent='Restam '+s+' segundos';tick=setInterval(()=>{s--;clock.textContent='Restam '+s+' segundos';if(s<=0){clearInterval(tick);clock.textContent='Tempo encerrado!'}},1000)}
-function backup(){let data={projeto:plan.textContent,notas:localStorage.getItem('cley_notas')||''};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='cley-cooe-backup.json';a.click()}
-</script></html>
+<section class="card" id="cmd-card"><h2>⌨️ CMD — Central de Comandos</h2><p class="muted">Digite <b>ajuda</b> para ver os comandos disponíveis.</p>
+<div class="terminal" id="terminal" role="log" aria-live="polite">CLEY COOE CMD v1.0
+Central iniciada com sucesso.
+Digite ajuda para listar os comandos.</div>
+<div class="cmdrow"><input id="cmdInput" autocomplete="off" placeholder="Ex.: ajuda"><button id="runCmd">Executar</button></div>
+<div><button class="alt" data-cmd="ajuda">Ajuda</button><button class="alt" data-cmd="status">Status</button><button class="alt" data-cmd="hora">Hora</button><button class="alt" data-cmd="limpar">Limpar tela</button></div>
+<p class="muted">Comandos internos do CLEY. Não executa comandos do Windows nem altera o Club Cooee.</p></section>
+
+<section class="card" id="room-card"><h2>🏠 Planejar decoração</h2><input id="room" placeholder="Nome da sala"><select id="style"><option>Minimalista</option><option>Moderna</option><option>Luxuosa</option><option>Neon futurista</option><option>Romântica</option><option>Praia</option><option>Boho</option></select><textarea id="desc" placeholder="Descreva tema, cores e ambiente"></textarea><textarea id="items" placeholder="Móveis e itens que deseja incluir"></textarea><button id="makePlan">Gerar projeto</button><div id="plan" class="out"></div><button class="alt" id="savePlan">Salvar projeto</button></section>
+
+<section class="card" id="grid-card"><h2>📐 Planta da sala</h2><p class="muted">Clique nos quadrados para marcar posições.</p><div id="grid"></div><button class="alt" id="clearGrid">Limpar planta</button></section>
+
+<section class="card" id="message-card"><h2>💬 Mensagens rápidas</h2><textarea id="msg" placeholder="Escreva convite ou mensagem"></textarea><button id="copyMsg">Copiar mensagem</button><button class="alt" id="invite">Criar convite</button><button class="alt" id="thanks">Agradecimento</button></section>
+
+<section class="card" id="event-card"><h2>🎈 Organizar evento</h2><input id="ev" placeholder="Nome do evento"><input id="date" placeholder="Data e horário"><textarea id="details" placeholder="Tema, regras e detalhes"></textarea><button id="makeEvent">Montar roteiro</button><div id="eventOut" class="out"></div><button class="alt" id="saveEvent">Salvar evento</button></section>
+
+<section class="card" id="notes-card"><h2>📝 Minhas notas</h2><textarea id="notes" placeholder="Guarde suas ideias"></textarea><button id="saveNotes">Salvar notas</button><button class="alt" id="loadNotes">Carregar notas</button></section>
+
+<section class="card" id="timer-card"><h2>⏱️ Temporizador</h2><input id="mins" type="number" min="1" max="1440" value="5"><button id="timerStart">Iniciar</button><button class="alt" id="timerStop">Parar</button><div id="clock" class="out">Pronto</div></section>
+
+<section class="card" id="backup-card"><h2>📦 Backup</h2><button id="backup">Baixar backup JSON</button><p class="muted">Os dados ficam guardados neste navegador. Faça backup para levar suas anotações a outro aparelho.</p></section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const terminal=$('terminal');
+function log(text){terminal.textContent+='\n> '+text;terminal.scrollTop=terminal.scrollHeight}
+function save(key,value){localStorage.setItem('cley_'+key,value);return 'Salvo neste navegador: '+key}
+function makePlan(){const value='Projeto: '+($('room').value||'Minha sala')+'\nEstilo: '+$('style').value+'\n\nConceito: '+($('desc').value||'Defina um tema central e use uma paleta de 2 a 3 cores.')+'\n\nDistribuição: coloque o móvel principal em destaque; deixe corredores livres; agrupe itens por tema; use iluminação e objetos pequenos para dar acabamento.\n\nItens desejados: '+($('items').value||'Definir lista de móveis')+'\n\nEtapas: 1. Definir tema e cores. 2. Posicionar móveis grandes. 3. Organizar circulação. 4. Adicionar iluminação. 5. Finalizar detalhes.';$('plan').textContent=value;return value}
+function backup(){const data={projeto:localStorage.getItem('cley_projeto')||'',notas:localStorage.getItem('cley_notas')||'',evento:localStorage.getItem('cley_evento')||'',dataExportacao:new Date().toISOString()};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='cley-cooe-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return 'Backup JSON preparado para baixar.'}
+function runCommand(raw){const parts=raw.trim().split(/\s+/);const cmd=(parts.shift()||'').toLowerCase();const arg=parts.join(' ');if(!cmd)return;
+const commands={
+ajuda:()=> 'COMANDOS DISPONÍVEIS\najuda — mostra esta lista\nstatus — mostra o estado do painel\nhora — data e hora local\nabrir salas — vai ao planejador de decoração\nabrir planta — vai à planta da sala\nabrir mensagens — vai às mensagens rápidas\nabrir eventos — vai ao organizador de eventos\nabrir notas — vai às notas\nabrir temporizador — vai ao temporizador\nsalvar notas — grava as notas atuais\ncarregar notas — recupera as notas salvas\nbackup — baixa um arquivo JSON\nlimpar — limpa a tela do CMD',
+status:()=> 'CLEY COOE Studio: ativo\nArmazenamento local: '+(typeof localStorage!=='undefined'?'disponível':'indisponível')+'\nFerramentas: salas, planta, mensagens, eventos, notas, temporizador e backup.',
+hora:()=>new Date().toLocaleString('pt-BR'),
+limpar:()=>{terminal.textContent='CLEY COOE CMD v1.0\nTela limpa. Digite ajuda para listar comandos.';return null},
+'abrir':()=>{const map={salas:'room-card',planta:'grid-card',mensagens:'message-card',eventos:'event-card',notas:'notes-card',temporizador:'timer-card'};const target=map[arg.toLowerCase()];if(!target)return 'Uso: abrir salas|planta|mensagens|eventos|notas|temporizador';$(target).scrollIntoView({behavior:'smooth',block:'center'});return 'Ferramenta aberta: '+arg},
+'salvar':()=>{if(arg.toLowerCase()!=='notas')return 'Uso: salvar notas';return save('notas',$('notes').value)},
+'carregar':()=>{if(arg.toLowerCase()!=='notas')return 'Uso: carregar notas';$('notes').value=localStorage.getItem('cley_notas')||'';return 'Notas carregadas.'},
+backup:()=>backup()
+};
+if(!commands[cmd]){log('Comando não reconhecido: '+cmd+'. Digite ajuda.');return}
+const result=commands[cmd]();if(result)log(result);
+}
+$('runCmd').addEventListener('click',()=>{const v=$('cmdInput').value;log('$ '+v);runCommand(v);$('cmdInput').value=''});
+$('cmdInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('runCmd').click()});
+document.querySelectorAll('[data-cmd]').forEach(b=>b.addEventListener('click',()=>{log('$ '+b.dataset.cmd);runCommand(b.dataset.cmd)}));
+$('makePlan').onclick=makePlan;$('savePlan').onclick=()=>log(save('projeto',$('plan').textContent||makePlan()));
+const grid=$('grid');for(let i=0;i<24;i++){const b=document.createElement('button');b.type='button';b.textContent='·';b.setAttribute('aria-label','Posição '+(i+1));b.onclick=()=>{b.classList.toggle('on');b.textContent=b.classList.contains('on')?'●':'·'};grid.append(b)}
+$('clearGrid').onclick=()=>{grid.querySelectorAll('button').forEach(b=>{b.classList.remove('on');b.textContent='·'})};
+$('copyMsg').onclick=()=>{const value=$('msg').value;if(!value){alert('Escreva uma mensagem primeiro.');return}if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(value).then(()=>alert('Mensagem copiada!')).catch(()=>alert('Não foi possível copiar automaticamente. Selecione o texto e copie.'));else alert('Seu navegador não permite cópia automática nesta página. Selecione e copie o texto.')};
+$('invite').onclick=()=>$('msg').value='🎉 Você está convidado! Vamos nos encontrar no Club Cooee!';
+$('thanks').onclick=()=>$('msg').value='✨ Obrigado por participar! Até a próxima!';
+$('makeEvent').onclick=()=>{$('eventOut').textContent='Evento: '+($('ev').value||'Sem nome')+'\nQuando: '+($('date').value||'A definir')+'\nDetalhes: '+($('details').value||'A definir')+'\n\nRoteiro: receber convidados; explicar regras; iniciar atividade; registrar foto; agradecer e encerrar.'};
+$('saveEvent').onclick=()=>log(save('evento',$('eventOut').textContent||'Monte o roteiro primeiro.'));
+$('saveNotes').onclick=()=>{log(save('notas',$('notes').value));};$('loadNotes').onclick=()=>{$('notes').value=localStorage.getItem('cley_notas')||'';log('Notas carregadas.')};
+let tick=null;$('timerStart').onclick=()=>{clearInterval(tick);let seconds=Math.max(1,Math.min(1440,Number($('mins').value)||1))*60;const render=()=>{$('clock').textContent='Restam '+Math.floor(seconds/60)+' min '+(seconds%60)+' s';if(seconds<=0){clearInterval(tick);tick=null;$('clock').textContent='Tempo encerrado!';return}seconds--};render();tick=setInterval(render,1000)};
+$('timerStop').onclick=()=>{clearInterval(tick);tick=null;$('clock').textContent='Temporizador parado.'};
+$('backup').onclick=()=>log(backup());
+</script>
+</body></html>
