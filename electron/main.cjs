@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, shell } = require("electron");
 const path = require("node:path");
+const { execFile } = require("node:child_process");
 
 const allowedHosts = new Set(["www.clubcooee.com", "clubcooee.com"]);
 const settings = new Set([
@@ -41,6 +42,13 @@ ipcMain.handle("open-official-search", async (_event, term) => {
 ipcMain.handle("open-setting", async (_event, setting) => {
   if (!settings.has(setting)) throw new Error("Configuração não permitida");
   await shell.openExternal(setting);
+  return true;
+});
+ipcMain.handle("open-system-tool", async (_event, tool) => {
+  const commands = { taskManager: ["taskmgr.exe", []], powerOptions: ["control.exe", ["powercfg.cpl"]] };
+  if (!commands[tool]) throw new Error("Ferramenta não permitida");
+  const [command, args] = commands[tool];
+  execFile(command, args);
   return true;
 });
 ipcMain.handle("open-folder", async (_event, folder) => {
