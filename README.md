@@ -1,2 +1,2 @@
 # cooee-news
-Sistema automático de notícias do Club Cooee
+Sistema automático do Club Cooee
