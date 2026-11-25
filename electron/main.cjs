@@ -30,6 +30,13 @@ function createWindow() {
   });
 }
 
+ipcMain.handle("request-official-integration", async () => {
+  const subject = encodeURIComponent("Solicitação de API/SDK oficial para integração com aplicativo independente");
+  const body = encodeURIComponent("Olá, equipe Club Cooee.\n\nEstou desenvolvendo o Cooee Tools 3D, um aplicativo independente para Windows. Gostaria de saber se existe API, SDK ou documentação pública autorizada para integrações externas e quais permissões e limites devo seguir.\n\nObrigado.");
+  await shell.openExternal("mailto:info@clubcooee.com?subject=" + subject + "&body=" + body);
+  return true;
+});
+
 ipcMain.handle("open-clubcooee", async () => {
   await shell.openExternal("https://www.clubcooee.com/");
   return true;
