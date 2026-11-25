@@ -42,8 +42,8 @@ function openGame(){if(api)act(api.openClubCooee(),"gameStatus");else window.ope
 $("launch").onclick=openGame;$("openGame").onclick=openGame;$("officialHome").onclick=openGame;
 document.querySelectorAll("[data-search]").forEach(b=>b.onclick=()=>api?act(api.searchOfficial(b.dataset.search)):window.open("https://www.google.com/search?q="+encodeURIComponent("site:clubcooee.com "+b.dataset.search),"_blank","noopener"));
 document.querySelectorAll("[data-setting]").forEach(b=>b.onclick=()=>api?act(api.openSetting(b.dataset.setting)):alert("Este atalho funciona no aplicativo para Windows."));
-$("taskManager").onclick=()=>{if(api)act(api.openSetting("ms-settings:gaming-gamemode"));else alert("Pressione Ctrl + Shift + Esc para abrir o Gerenciador de Tarefas.")};
-$("power").onclick=()=>{if(api)act(api.openSetting("ms-settings:display"));else alert("Pesquise por Opções de Energia no menu Iniciar.")};
+$("taskManager").onclick=()=>{if(api)act(api.openSystemTool("taskManager"));else alert("Pressione Ctrl + Shift + Esc para abrir o Gerenciador de Tarefas.")};
+$("power").onclick=()=>{if(api)act(api.openSystemTool("powerOptions"));else alert("Pesquise por Opções de Energia no menu Iniciar.")};
 function tick(){const d=new Date();$("clock").textContent=d.toLocaleTimeString("pt-BR");$("date").textContent=d.toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"long",year:"numeric"})}tick();setInterval(tick,1000);
 const eventKey="cooee-tools-events-v1";
 function renderEvents(){const arr=JSON.parse(localStorage.getItem(eventKey)||"[]");$("events").innerHTML=arr.length?arr.map((e,i)=>'<div class="event"><strong>'+escapeHtml(e.name)+'</strong><span>'+new Date(e.when).toLocaleString("pt-BR")+'</span> <button data-remove="'+i+'">Remover</button></div>').join(""):'<div class="status">Nenhum evento cadastrado.</div>';document.querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>{const a=JSON.parse(localStorage.getItem(eventKey)||"[]");a.splice(+b.dataset.remove,1);localStorage.setItem(eventKey,JSON.stringify(a));renderEvents()})}
